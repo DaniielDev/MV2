@@ -1,0 +1,99 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Receitas</title>
+    <!-- Inclusão do Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-warning container-fluid" onload="preencheCatalogo()">
+    <!-- Título da página -->
+    <h1 class="text-center mt-4">Catálogo de Receitas</h1>
+
+    <!-- Div de catálogo de receitas (flex-wrap) -->
+    <div id="pnlCatalogo" class="d-flex flex-wrap justify-content-center"></div>
+
+    <script>
+        // Vetor de receitas em formato JSON
+        const receitas = [
+            {
+                titulo: "Bolo de Chocolate",
+                imagem: "img/bolo de chocolate.jfif", // Coloque a imagem correspondente no caminho correto
+                preparo: "Misture todos os ingredientes e asse por 40 minutos a 180°C.",
+                ingredientes: [
+                    "2 xícaras de farinha",
+                    "1 xícara de açúcar",
+                    "1 xícara de chocolate em pó",
+                    "3 ovos",
+                    "1 xícara de leite",
+                    "1/2 xícara de óleo",
+                    "1 colher de fermento"
+                ]
+            },
+            {
+                titulo: "Lasanha de Carne",
+                imagem: "img/lasanha de carne.jfif",
+                preparo: "Monte as camadas e leve ao forno por 35 minutos a 200°C.",
+                ingredientes: [
+                    "500g de carne moída",
+                    "1 pacote de massa de lasanha",
+                    "300g de queijo mussarela",
+                    "300g de presunto",
+                    "1 lata de molho de tomate",
+                    "Orégano a gosto"
+                ]
+            },
+            {
+                titulo: "Torta de Limão",
+                imagem: "img/torta de limao.jpg",
+                preparo: "Misture os ingredientes e asse a massa por 25 minutos a 180°C.",
+                ingredientes: [
+                    "1 lata de leite condensado",
+                    "1/2 xícara de suco de limão",
+                    "2 colheres de manteiga",
+                    "200g de bolacha maisena",
+                    "Raspas de limão"
+                ]
+            }
+        ];
+
+        // Função para gerar a lista de ingredientes em HTML
+        function getListaIngredientes(receita) {
+            let listaIngredientes = "<ul>";
+            listaIngredientes += receita.ingredientes.map(ingrediente => `<li>${ingrediente}</li>`).reduce((acc, curr) => acc + curr, "");
+            listaIngredientes += "</ul>";
+            return listaIngredientes;
+        }
+
+        // Função para gerar o painel de receita
+        function getCard(receita) {
+            return `
+                <div class="card m-3" style="width: 250px;">
+                    <img src="${receita.imagem}" class="card-img-top" alt="${receita.titulo}">
+                    <div class="card-body">
+                        <h5 class="card-title">${receita.titulo}</h5>
+                        <div class="card-text">
+                            ${getListaIngredientes(receita)}
+                            <hr>
+                            <p>${receita.preparo}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Função para preencher o catálogo de receitas
+        function preencheCatalogo() {
+            // Captura o elemento pnlCatalogo
+            const catalogo = document.getElementById("pnlCatalogo");
+
+            // Gera os cards de receitas e define o innerHTML
+            catalogo.innerHTML = receitas.map(receita => getCard(receita)).reduce((acc, curr) => acc + curr, "");
+        }
+    </script>
+
+    <!-- Inclusão dos scripts do Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

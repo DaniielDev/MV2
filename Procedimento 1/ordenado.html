@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenação</title>
+    <script src="ordenando.js"></script>
+</head>
+<body>
+    <h1>Ordenando Valores</h1>
+
+    <!-- Campo de entrada numérico -->
+    <input type="number" id="valor" placeholder="Digite um valor">
+    
+    <!-- Botão Adicionar -->
+    <button onclick="add()">Adicionar</button>
+
+    <!-- Campo de seleção para o algoritmo de ordenação -->
+    <select id="algoritmo">
+        <option value="bubble">Bubble Sort</option>
+        <option value="selection">Selection Sort</option>
+        <option value="quick">Quick Sort</option>
+    </select>
+
+    <!-- Botão Ordenar -->
+    <button onclick="ordenar()">Ordenar</button>
+
+    <!-- Botão Misturar -->
+    <button onclick="misturar()">Misturar</button>
+
+    <!-- Lista de valores -->
+    <ul id="valores"></ul>
+
+    <script>
+        // Função para adicionar o valor à lista
+        function add() {
+            // Captura o campo de entrada
+            var valor = document.getElementById("valor").value;
+
+            // Captura a lista de valores
+            var lista = document.getElementById("valores");
+
+            // Cria um novo elemento <li>
+            var node = document.createElement("li");
+
+            // Define o texto do nó com o valor inserido
+            var textoNode = document.createTextNode(valor);
+            node.appendChild(textoNode);
+
+            // Adiciona o elemento à lista
+            lista.appendChild(node);
+        }
+
+        // Função para ordenar a lista de valores
+        function ordenar() {
+            // Captura a lista de valores e a lista de seleção
+            var lista = document.getElementById("valores");
+            var algoritmo = document.getElementById("algoritmo").selectedIndex;
+
+            // Obtém os itens da lista como um vetor de inteiros
+            var vetor = Array.from(lista.children).map(function(item) {
+                return eval(item.innerHTML);
+            });
+
+            // Aplica o algoritmo de ordenação baseado na seleção
+            if (algoritmo === 0) {
+                bubbleSort(vetor);
+            } else if (algoritmo === 1) {
+                selectionSort(vetor);
+            } else if (algoritmo === 2) {
+                quickSort(vetor, 0, vetor.length - 1);
+            }
+
+            // Atualiza a lista com os itens ordenados
+            lista.innerHTML = vetor.map(function(valor) {
+                return "<li>" + valor + "</li>";
+            }).reduce(function(acc, curr) {
+                return acc + curr;
+            }, "");
+        }
+
+        // Função para misturar a lista de valores
+        function misturar() {
+            // Captura a lista de valores
+            var lista = document.getElementById("valores");
+
+            // Obtém os itens da lista como um vetor de inteiros
+            var vetor = Array.from(lista.children).map(function(item) {
+                return eval(item.innerHTML);
+            });
+
+            // Função de embaralhamento
+            shuffle(vetor);
+
+            // Atualiza a lista com os itens misturados
+            lista.innerHTML = vetor.map(function(valor) {
+                return "<li>" + valor + "</li>";
+            }).reduce(function(acc, curr) {
+                return acc + curr;
+            }, "");
+        }
+
+        // Função de embaralhamento
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Implementação do Bubble Sort
+        function bubbleSort(arr) {
+            var n = arr.length;
+            for (var i = 0; i < n - 1; i++) {
+                for (var j = 0; j < n - i - 1; j++) {
+                    if (arr[j] > arr[j + 1]) {
+                        var temp = arr[j];
+                        arr[j] = arr[j + 1];
+                        arr[j + 1] = temp;
+                    }
+                }
+            }
+        }
+
+        // Implementação do Selection Sort
+        function selectionSort(arr) {
+            var n = arr.length;
+            for (var i = 0; i < n; i++) {
+                var min = i;
+                for (var j = i + 1; j < n; j++) {
+                    if (arr[j] < arr[min]) {
+                        min = j;
+                    }
+                }
+                if (min !== i) {
+                    var temp = arr[i];
+                    arr[i] = arr[min];
+                    arr[min] = temp;
+                }
+            }
+        }
+
+        // Implementação do Quick Sort
+        function quickSort(arr, low, high) {
+            if (low < high) {
+                var pi = partition(arr, low, high);
+                quickSort(arr, low, pi - 1);
+                quickSort(arr, pi + 1, high);
+            }
+        }
+
+        function partition(arr, low, high) {
+            var pivot = arr[high];
+            var i = (low - 1);
+
+            for (var j = low; j < high; j++) {
+                if (arr[j] <= pivot) {
+                    i++;
+                    var temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+
+            var temp = arr[i + 1];
+            arr[i + 1] = arr[high];
+            arr[high] = temp;
+
+            return i + 1;
+        }
+    </script>
+</body>
+</html>
